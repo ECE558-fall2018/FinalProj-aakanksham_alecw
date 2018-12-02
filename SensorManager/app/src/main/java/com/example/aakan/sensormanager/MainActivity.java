@@ -34,6 +34,8 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     public Vibrator v;
 
+    private int RED, GREEN, BLUE;
+
 
     // Set up firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -97,9 +99,9 @@ public class MainActivity extends Activity implements SensorEventListener {
         displayCleanValues();
         // display the current x,y,z accelerometer values
         displayCurrentValues();
-        // calculate hue
-        int Hue = calculateHue();
-        myRef.child("PWM_RED_LED").setValue(Hue);
+        // calculate RGB values
+        calculateRGB();
+        updateFireBase();
         // display the max x,y,z accelerometer values
         displayMaxValues();
 
@@ -128,9 +130,73 @@ public class MainActivity extends Activity implements SensorEventListener {
         currentZ.setText("0.0");
     }
 
-    public int calculateHue() {
-        int rawAngle = (int) Math.toDegrees(Math.atan((deltaX)/(deltaY)));
-        int offsetAngle;
+    public void calculateRGB() {
+        // Algorithm found from:
+        // https://en.wikipedia.org/wiki/HSL_and_HSV
+        double Hue, HuePrime;
+        double Saturation = 1.0;
+        double Value = 1.0;
+        double Chroma, X;
+        int PWMChroma, PWMX;
+
+        Hue = calculateHue();
+
+        Chroma = Saturation * Value;
+
+        HuePrime = Hue/60.0;
+
+        X = Chroma * ( 1.0 - Math.abs((HuePrime%2) - 1.0) );
+
+        //Multiply these values by 100 to get PWM values
+        PWMChroma   = (int) (Chroma * 100.0);
+        PWMX        = (int) (X * 100.0);
+
+        if ( (HuePrime >= 0) & (HuePrime <= 1) ) {
+            RED     = PWMChroma;
+            GREEN   = PWMX;
+            BLUE    = 0;
+        }
+        else if ( (HuePrime > 1) & (HuePrime <= 2) ) {
+            RED     = PWMX;
+            GREEN   = PWMChroma;
+            BLUE    = 0;
+        }
+        else if ( (HuePrime > 2) & (HuePrime <= 3) ) {
+            RED     = 0;
+            GREEN   = PWMChroma;
+            BLUE    = PWMX;
+        }
+        else if ( (HuePrime > 3) & (HuePrime <= 4) ) {
+            RED     = 0;
+            GREEN   = PWMX;
+            BLUE    = PWMChroma;
+        }
+        else if ( (HuePrime > 4) & (HuePrime <= 5) ) {
+            RED     = PWMX;
+            GREEN   = 0;
+            BLUE    = PWMChroma;
+        }
+        else if ( (HuePrime > 5) & (HuePrime <= 6) ) {
+            RED     = PWMChroma;
+            GREEN   = 0;
+            BLUE    = PWMX;
+        }
+        else {
+            RED     = 0;
+            GREEN   = 0;
+            BLUE    = 0;
+        }
+    }
+
+    private void updateFireBase() {
+        myRef.child("PWM_RED_LED").setValue(RED);
+        myRef.child("PWM_GREEN_LED").setValue(GREEN);
+        myRef.child("PWM_BLUE_LED").setValue(BLUE);
+    }
+
+    public double calculateHue() {
+        double rawAngle = Math.toDegrees(Math.atan((deltaX)/(deltaY)));
+        double offsetAngle;
         if ((deltaX < 0) & (deltaY >= 0)) {
             rawAngle = rawAngle * (-1);
             offsetAngle = 0;
@@ -147,8 +213,6 @@ public class MainActivity extends Activity implements SensorEventListener {
             rawAngle = 90 - rawAngle;
             offsetAngle = 270;
         }
-
-        //offsetAngle = 0;
 
         return (rawAngle + offsetAngle);
     }
