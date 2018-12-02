@@ -34,7 +34,13 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     public Vibrator v;
 
-    private int RED, GREEN, BLUE;
+    private int RED, GREEN, BLUE, MOTOR;
+
+    private boolean motorToggle = false;
+
+    long lastMillis = 0;
+
+
 
 
     // Set up firebase
@@ -62,7 +68,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
 
-        //myRef.addValueEventListener(ValueEventListener);
     }
 
     public void initializeViews() {
@@ -101,9 +106,15 @@ public class MainActivity extends Activity implements SensorEventListener {
         displayCurrentValues();
         // calculate RGB values
         calculateRGB();
-        updateFireBase();
         // display the max x,y,z accelerometer values
         displayMaxValues();
+
+        // Check if the device has been shaken and toggle the motor accordingly
+        checkForShake();
+
+
+        //Update the database with our new values
+        updateFireBase();
 
         deltaX = event.values[0];
         deltaY = event.values[1];
@@ -134,9 +145,11 @@ public class MainActivity extends Activity implements SensorEventListener {
         myRef.child("PWM_RED_LED").setValue(RED);
         myRef.child("PWM_GREEN_LED").setValue(GREEN);
         myRef.child("PWM_BLUE_LED").setValue(BLUE);
+        myRef.child("PWM_MOTOR").setValue(MOTOR);
+
     }
 
-    public void calculateRGB() {
+    private void calculateRGB() {
         // Algorithm found from:
         // https://en.wikipedia.org/wiki/HSL_and_HSV
         double Hue, HuePrime;
@@ -196,7 +209,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         }
     }
 
-    public double calculateValue() {
+    private double calculateValue() {
         double tiltAngle, Value;
 
         tiltAngle = Math.abs( Math.toDegrees(Math.atan((deltaY)/(deltaZ))) );
@@ -207,7 +220,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         return Value;
     }
 
-    public double calculateHue() {
+    private double calculateHue() {
         double rawAngle = Math.toDegrees(Math.atan((deltaX)/(deltaY)));
         double offsetAngle;
         if ((deltaX < 0) & (deltaY >= 0)) {
@@ -228,6 +241,42 @@ public class MainActivity extends Activity implements SensorEventListener {
         }
 
         return (rawAngle + offsetAngle);
+    }
+
+    private void checkForShake() {
+        boolean shake = false;
+        final int shakeThreshold = 20;
+        final int shakeTimeOut = 2000; //milliseconds
+        long currentMillis, difference;
+
+        if (true) {
+            if (deltaX > shakeThreshold) {
+                shake = true;
+            } else if (deltaY > shakeThreshold) {
+                shake = true;
+            } else if (deltaZ > shakeThreshold) {
+                shake = true;
+            }
+
+            if (shake) {
+                currentMillis = System.currentTimeMillis();
+                difference = currentMillis - lastMillis;
+                if (difference > shakeTimeOut) {
+                    motorToggle = !motorToggle;
+                    lastMillis = System.currentTimeMillis();
+                }
+            }
+
+            if (motorToggle) {
+                MOTOR = getMotor();
+            } else {
+                MOTOR = 0;
+            }
+        }
+    }
+
+    private int getMotor() {
+        return 50;
     }
     // display the current x,y,z accelerometer values
     public void displayCurrentValues() {
