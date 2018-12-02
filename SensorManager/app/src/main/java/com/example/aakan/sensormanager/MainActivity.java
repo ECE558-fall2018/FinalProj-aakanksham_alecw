@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class MainActivity extends Activity implements SensorEventListener {
 
     private float lastX, lastY, lastZ;
@@ -31,6 +34,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     public Vibrator v;
 
+
+    // Set up firebase
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference myRef = database.getReference("iotDevice1");
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +59,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         //initialize vibration
         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
+
+        //myRef.addValueEventListener(ValueEventListener);
     }
 
     public void initializeViews() {
@@ -87,9 +97,16 @@ public class MainActivity extends Activity implements SensorEventListener {
         displayCleanValues();
         // display the current x,y,z accelerometer values
         displayCurrentValues();
+        // calculate hue
+        int Hue = calculateHue();
+        myRef.child("PWM_RED_LED").setValue(Hue);
         // display the max x,y,z accelerometer values
         displayMaxValues();
 
+        deltaX = event.values[0];
+        deltaY = event.values[1];
+        deltaZ = event.values[2];
+/*
         // get the change of the x,y,z values of the accelerometer
         deltaX = Math.abs(lastX - event.values[0]);
         deltaY = Math.abs(lastY - event.values[1]);
@@ -102,7 +119,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             deltaY = 0;
         if ((deltaZ > vibrateThreshold) || (deltaY > vibrateThreshold) || (deltaZ > vibrateThreshold)) {
             v.vibrate(50);
-        }
+        }*/
     }
 
     public void displayCleanValues() {
@@ -111,11 +128,39 @@ public class MainActivity extends Activity implements SensorEventListener {
         currentZ.setText("0.0");
     }
 
+    public int calculateHue() {
+        int rawAngle = (int) Math.toDegrees(Math.atan((deltaX)/(deltaY)));
+        int offsetAngle;
+        if ((deltaX < 0) & (deltaY >= 0)) {
+            rawAngle = rawAngle * (-1);
+            offsetAngle = 0;
+        }
+        else if ((deltaX < 0) & (deltaY < 0)) {
+            rawAngle = 90 - rawAngle;
+            offsetAngle = 90;
+        }
+        else if ((deltaX >= 0) & (deltaY < 0)) {
+            rawAngle = rawAngle * (-1);
+            offsetAngle = 180;
+        }
+        else {//if ((deltaX >= 0) & (deltaY >= 0)) {
+            rawAngle = 90 - rawAngle;
+            offsetAngle = 270;
+        }
+
+        //offsetAngle = 0;
+
+        return (rawAngle + offsetAngle);
+    }
     // display the current x,y,z accelerometer values
     public void displayCurrentValues() {
         currentX.setText(Float.toString(deltaX));
         currentY.setText(Float.toString(deltaY));
         currentZ.setText(Float.toString(deltaZ));
+
+        /*myRef.child("PWM_RED_LED").setValue(deltaX);
+        myRef.child("PWM_GREEN_LED").setValue(deltaY);
+        myRef.child("PWM_BLUE_LED").setValue(deltaZ);*/
     }
 
     // display the max x,y,z accelerometer values
