@@ -130,16 +130,24 @@ public class MainActivity extends Activity implements SensorEventListener {
         currentZ.setText("0.0");
     }
 
+    private void updateFireBase() {
+        myRef.child("PWM_RED_LED").setValue(RED);
+        myRef.child("PWM_GREEN_LED").setValue(GREEN);
+        myRef.child("PWM_BLUE_LED").setValue(BLUE);
+    }
+
     public void calculateRGB() {
         // Algorithm found from:
         // https://en.wikipedia.org/wiki/HSL_and_HSV
         double Hue, HuePrime;
-        double Saturation = 1.0;
-        double Value = 1.0;
+        double Saturation;
+        double Value;
         double Chroma, X;
         int PWMChroma, PWMX;
 
         Hue = calculateHue();
+        Saturation = 1.0;
+        Value = calculateValue();
 
         Chroma = Saturation * Value;
 
@@ -188,10 +196,15 @@ public class MainActivity extends Activity implements SensorEventListener {
         }
     }
 
-    private void updateFireBase() {
-        myRef.child("PWM_RED_LED").setValue(RED);
-        myRef.child("PWM_GREEN_LED").setValue(GREEN);
-        myRef.child("PWM_BLUE_LED").setValue(BLUE);
+    public double calculateValue() {
+        double tiltAngle, Value;
+
+        tiltAngle = Math.abs( Math.toDegrees(Math.atan((deltaY)/(deltaZ))) );
+
+        // Normalize the value to 90 degrees
+        Value = tiltAngle/90.0;
+
+        return Value;
     }
 
     public double calculateHue() {
