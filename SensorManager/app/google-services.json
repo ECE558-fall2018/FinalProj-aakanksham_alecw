@@ -98,6 +98,14 @@
           }
         },
         {
+          "client_id": "594301980624-0dr08eqle2vv4t33hh9bkm9ujpo31iih.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.aakan.sensormanager",
+            "certificate_hash": "4698db1a67a968b6c41a0960281ad93b602d6afc"
+          }
+        },
+        {
           "client_id": "594301980624-be03usl54icnngn2bk04q7o6l7j3vpht.apps.googleusercontent.com",
           "client_type": 3
         }

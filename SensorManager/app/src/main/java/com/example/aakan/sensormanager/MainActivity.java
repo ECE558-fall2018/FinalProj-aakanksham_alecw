@@ -8,10 +8,14 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
@@ -30,7 +34,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private float vibrateThreshold = 0;
 
-    private TextView currentX, currentY, currentZ, maxX, maxY, maxZ;
+    private TextView currentX, currentY, currentZ, Saturation_setX, PWM_setX;
+    private SeekBar PWM_MOTOR, Saturation;
+    private TextView Angle, RGBValue;
+    private int PWM_MOTOR_Value, SaturationValue;
 
     public Vibrator v;
 
@@ -39,9 +46,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     private boolean motorToggle = false;
 
     long lastMillis = 0;
-
-
-
 
     // Set up firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -64,9 +68,58 @@ public class MainActivity extends Activity implements SensorEventListener {
             // fail, we dont have an accelerometer!
         }
 
+        myRef.child("message").setValue("Hi");
         //initialize vibration
         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
+        try {
+            PWM_MOTOR.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
+                    PWM_MOTOR_Value = progress;
+
+                    PWM_setX.setText(String.valueOf(PWM_MOTOR_Value));
+
+                    PWM_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+                    myRef.child("PWM_MOTOR").setValue(PWM_MOTOR_Value);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
+            Saturation.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();;
+                    SaturationValue = progress;
+
+                    Saturation_setX.setText(String.valueOf(SaturationValue));
+                    Saturation_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+        }
+        catch (Exception e) {
+            Log.e(TAG, "Error - Exception " + e);
+        }
 
     }
 
@@ -75,9 +128,12 @@ public class MainActivity extends Activity implements SensorEventListener {
         currentY = (TextView) findViewById(R.id.currentY);
         currentZ = (TextView) findViewById(R.id.currentZ);
 
-        maxX = (TextView) findViewById(R.id.maxX);
-        maxY = (TextView) findViewById(R.id.maxY);
-        maxZ = (TextView) findViewById(R.id.maxZ);
+        PWM_MOTOR = (SeekBar) findViewById(R.id.PWM_MOTOR_SeekBar);
+        Saturation = (SeekBar) findViewById(R.id.Saturation_SeekBar);
+        Angle = (TextView) findViewById(R.id.Angle);
+        RGBValue = (TextView) findViewById(R.id.RGBValues);
+        Saturation_setX = (TextView) findViewById(R.id.Saturation_setX);
+        PWM_setX = (TextView) findViewById(R.id.PWM_setX);
     }
 
     //onResume() register the accelerometer for listening the events
@@ -107,11 +163,10 @@ public class MainActivity extends Activity implements SensorEventListener {
         // calculate RGB values
         calculateRGB();
         // display the max x,y,z accelerometer values
-        displayMaxValues();
+        //displayMaxValues();
 
         // Check if the device has been shaken and toggle the motor accordingly
         checkForShake();
-
 
         //Update the database with our new values
         updateFireBase();
@@ -119,20 +174,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         deltaX = event.values[0];
         deltaY = event.values[1];
         deltaZ = event.values[2];
-/*
-        // get the change of the x,y,z values of the accelerometer
-        deltaX = Math.abs(lastX - event.values[0]);
-        deltaY = Math.abs(lastY - event.values[1]);
-        deltaZ = Math.abs(lastZ - event.values[2]);
-
-        // if the change is below 2, it is just plain noise
-        if (deltaX < 2)
-            deltaX = 0;
-        if (deltaY < 2)
-            deltaY = 0;
-        if ((deltaZ > vibrateThreshold) || (deltaY > vibrateThreshold) || (deltaZ > vibrateThreshold)) {
-            v.vibrate(50);
-        }*/
     }
 
     public void displayCleanValues() {
@@ -146,7 +187,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         myRef.child("PWM_GREEN_LED").setValue(GREEN);
         myRef.child("PWM_BLUE_LED").setValue(BLUE);
         myRef.child("PWM_MOTOR").setValue(MOTOR);
-
     }
 
     private void calculateRGB() {
@@ -159,7 +199,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         int PWMChroma, PWMX;
 
         Hue = calculateHue();
-        Saturation = 1.0;
+        Saturation = SaturationValue/100;
         Value = calculateValue();
 
         Chroma = Saturation * Value;
@@ -207,6 +247,9 @@ public class MainActivity extends Activity implements SensorEventListener {
             GREEN   = 0;
             BLUE    = 0;
         }
+
+        String RGBText = "(" + String.valueOf(RED) + "," + String.valueOf(GREEN) + "," + String.valueOf(BLUE) + ")";
+        RGBValue.setText(RGBText);
     }
 
     private double calculateValue() {
@@ -276,7 +319,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     private int getMotor() {
-        return 50;
+
+        return PWM_MOTOR_Value;
     }
     // display the current x,y,z accelerometer values
     public void displayCurrentValues() {
@@ -284,24 +328,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         currentY.setText(Float.toString(deltaY));
         currentZ.setText(Float.toString(deltaZ));
 
-        /*myRef.child("PWM_RED_LED").setValue(deltaX);
-        myRef.child("PWM_GREEN_LED").setValue(deltaY);
-        myRef.child("PWM_BLUE_LED").setValue(deltaZ);*/
-    }
-
-    // display the max x,y,z accelerometer values
-    public void displayMaxValues() {
-        if (deltaX > deltaXMax) {
-            deltaXMax = deltaX;
-            maxX.setText(Float.toString(deltaXMax));
-        }
-        if (deltaY > deltaYMax) {
-            deltaYMax = deltaY;
-            maxY.setText(Float.toString(deltaYMax));
-        }
-        if (deltaZ > deltaZMax) {
-            deltaZMax = deltaZ;
-            maxZ.setText(Float.toString(deltaZMax));
-        }
+        double AngleV = Math.abs( Math.toDegrees(Math.atan((deltaY)/(deltaZ))) );
+        Angle.setText(String.valueOf(AngleV));
     }
 }
