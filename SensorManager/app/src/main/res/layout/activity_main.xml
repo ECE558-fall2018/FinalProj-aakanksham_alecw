@@ -8,15 +8,17 @@
     android:background="#ffffff"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="20dp" >
+    android:paddingTop="20dp"
+    android:backgroundTint="@color/Blue">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="center"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="32dp"
         android:gravity="center"
         android:text="@string/CurrentAccelarationLabel"
+        android:textColor="@color/White"
         android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,10 +26,11 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="80dp"
         android:background="#ffffff"
         android:baselineAligned="false"
         android:gravity="center|top"
+        android:backgroundTint="@color/Blue"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -38,6 +41,7 @@
             android:layout_weight="0.33"
             android:background="#ffffff"
             android:gravity="center"
+            android:backgroundTint="@color/Blue"
             android:orientation="vertical">
 
             <TextView
@@ -46,7 +50,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/XAxisLabel"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/currentX"
@@ -55,14 +60,15 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/CurrentX"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="#ffffff"
+            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -72,7 +78,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/YAxisLabel"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/currentY"
@@ -81,14 +88,15 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/CurrentY"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="#ffffff"
+            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -98,7 +106,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/ZAxisLabel"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/currentZ"
@@ -107,15 +116,16 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/CurrentZ"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:background="#ffffff"
+        android:layout_marginTop="170dp"
+        android:background="@color/Blue"
         android:baselineAligned="false"
         android:gravity="center|top"
         android:orientation="horizontal"
@@ -123,21 +133,23 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="23dp"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
-            android:background="#ffffff"
+            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/AngleLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="112dp"
+                android:layout_height="64dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/AngleLabel"
-                android:textSize="15sp" />
+                android:gravity="center"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/Angle"
@@ -146,25 +158,28 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/Angle"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="27dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="#ffffff"
+            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/RGBLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="181dp"
+                android:layout_height="64dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/RGBLabel"
-                android:textSize="15sp" />
+                android:gravity="center"
+                android:textColor="@color/White"
+                android:textSize="20sp"/>
 
             <TextView
                 android:id="@+id/RGBValues"
@@ -173,7 +188,8 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:text="@string/RGBValues"
-                android:textSize="15sp" />
+                android:textColor="@color/White"
+                android:textSize="20sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -181,8 +197,8 @@
         android:id="@+id/PWM_MOTOR_SeekBar"
         android:layout_width="257dp"
         android:layout_height="61dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="232dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="348dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -190,31 +206,35 @@
         android:id="@+id/Saturation_SeekBar"
         android:layout_width="259dp"
         android:layout_height="61dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="388dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="472dp"
         android:progress="50"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/PWM_Label"
-        android:layout_width="92dp"
+        android:layout_width="135dp"
         android:layout_height="61dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="188dp"
+        android:layout_marginLeft="124dp"
+        android:layout_marginTop="288dp"
         android:gravity="center"
         android:text="@string/PWM_Label"
+        android:textColor="@color/White"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/SaturationLabel"
-        android:layout_width="92dp"
+        android:layout_width="126dp"
         android:layout_height="61dp"
-        android:layout_marginStart="140dp"
-        android:layout_marginTop="320dp"
+        android:layout_marginLeft="128dp"
+        android:layout_marginTop="416dp"
         android:gravity="center"
         android:text="@string/SaturationLabel"
+        android:textColor="@color/White"
+        android:textSize="20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -222,9 +242,11 @@
         android:id="@+id/PWM_setX"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
-        android:layout_marginStart="184dp"
-        android:layout_marginTop="236dp"
+        android:layout_marginLeft="192dp"
+        android:layout_marginTop="352dp"
         android:text="@string/PWM_setX"
+        android:textSize="20sp"
+        android:textColor="@color/White"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -232,9 +254,11 @@
         android:id="@+id/Saturation_setX"
         android:layout_width="wrap_content"
         android:layout_height="31dp"
-        android:layout_marginStart="192dp"
-        android:layout_marginTop="388dp"
+        android:layout_marginLeft="192dp"
+        android:layout_marginTop="472dp"
         android:text="@string/Saturation_setX"
+        android:textSize="20sp"
+        android:textColor="@color/White"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

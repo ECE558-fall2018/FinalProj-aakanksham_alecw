@@ -9,7 +9,7 @@
     <string name="CurrentZ">0.0</string>
     <string name="AngleLabel">Angle</string>
     <string name="Angle">0.0</string>
-    <string name="RGBLabel">Decimal Code (R,G,B)</string>
+    <string name="RGBLabel">(R,G,B)</string>
     <string name="RGBValues">(0,0,0)</string>
     <string name="PWM_Label">PWM Motor</string>
     <string name="SaturationLabel">Saturation</string>

@@ -2,6 +2,7 @@ package com.example.aakan.sensormanager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,11 +10,14 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.DecimalFormat;
 
 import static android.content.ContentValues.TAG;
 
@@ -162,18 +166,17 @@ public class MainActivity extends Activity implements SensorEventListener {
         displayCurrentValues();
         // calculate RGB values
         calculateRGB();
-        // display the max x,y,z accelerometer values
-        //displayMaxValues();
-
         // Check if the device has been shaken and toggle the motor accordingly
         checkForShake();
-
         //Update the database with our new values
         updateFireBase();
 
         deltaX = event.values[0];
         deltaY = event.values[1];
         deltaZ = event.values[2];
+
+        // Changing background color
+        setActivityBackgroundColor(RED, GREEN, BLUE);
     }
 
     public void displayCleanValues() {
@@ -199,7 +202,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         int PWMChroma, PWMX;
 
         Hue = calculateHue();
-        Saturation = SaturationValue/100;
+        //Saturation = SaturationValue/100;
+        Saturation = 0.50;
         Value = calculateValue();
 
         Chroma = Saturation * Value;
@@ -329,6 +333,18 @@ public class MainActivity extends Activity implements SensorEventListener {
         currentZ.setText(Float.toString(deltaZ));
 
         double AngleV = Math.abs( Math.toDegrees(Math.atan((deltaY)/(deltaZ))) );
+        DecimalFormat df = new DecimalFormat("#.##");
         Angle.setText(String.valueOf(AngleV));
+    }
+
+    public void setActivityBackgroundColor(int R, int G, int B) {
+       //String hex = String.format("#%02x%02x%02x", R, G, B);
+       //int clr = Integer.valueOf(hex);
+
+       //Color color = new Color (R,G,B);
+
+        View view = this.getWindow().getDecorView();
+        view.setBackgroundColor(Color.rgb(R,G,B));
+        //view.setBackgroundColor(Color.rgb(R, G, B));
     }
 }
