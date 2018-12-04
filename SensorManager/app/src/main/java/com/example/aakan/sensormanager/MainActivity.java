@@ -41,7 +41,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     private TextView currentX, currentY, currentZ, Saturation_setX, PWM_setX;
     private SeekBar PWM_MOTOR, Saturation;
     private TextView Angle, RGBValue;
-    private int PWM_MOTOR_Value, SaturationValue;
+    private int PWM_MOTOR_Value;
+    private double SaturationValue;
 
     public Vibrator v;
 
@@ -86,7 +87,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                     PWM_setX.setText(String.valueOf(PWM_MOTOR_Value));
 
                     PWM_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
-                    myRef.child("PWM_MOTOR").setValue(PWM_MOTOR_Value);
+                    //myRef.child("PWM_MOTOR").setValue(PWM_MOTOR_Value);
                 }
 
                 @Override
@@ -106,7 +107,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                     int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();;
                     SaturationValue = progress;
 
-                    Saturation_setX.setText(String.valueOf(SaturationValue));
+                    Saturation_setX.setText(String.valueOf((int) SaturationValue));
                     Saturation_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
                 }
 
@@ -203,7 +204,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         Hue = calculateHue();
         //Saturation = SaturationValue/100;
-        Saturation = 0.50;
+        Saturation = SaturationValue/100.0;
         Value = calculateValue();
 
         Chroma = Saturation * Value;
@@ -292,7 +293,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private void checkForShake() {
         boolean shake = false;
-        final int shakeThreshold = 20;
+        final int shakeThreshold = 30; // m/(s^2)
         final int shakeTimeOut = 2000; //milliseconds
         long currentMillis, difference;
 
