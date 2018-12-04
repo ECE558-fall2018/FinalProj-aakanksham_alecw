@@ -1,0 +1,40 @@
+cd C:\Users\Alec\AppData\Local\Android\Sdk\platform-tools
+
+adb devices
+
+connect via wifi
+https://developer.android.com/studio/command-line/adb
+
+adb connect 192.168.0.198
+adb install C:\Users\Alec\OneDrive\6th_year\ECE_558\PROJ3\proj3_github_repo\release\app-release.apk
+
+//initialize
+adb connect 192.168.0.198
+
+adb -s 192.168.0.198:5555 uninstall alec.androidthingsece558
+
+adb -s 192.168.0.198:5555 logcat -c
+
+adb -s 192.168.0.198:5555 install -g C:\Users\Alec\OneDrive\6th_year\ECE_558\PROJ3\proj3_github_repo\release\app-release.apk
+
+adb -s 192.168.0.198:5555 shell am start -n alec.androidthingsece558/.HomeActivity
+
+
+
+adb -s 172.20.10.2:5555 install -g C:\Users\Alec\OneDrive\6th_year\ECE_558\PROJ3\proj3_github_repo\release\app-release.apk
+
+adb -s 172.20.10.2:5555 shell am start -n alec.androidthingsece558/.HomeActivity
+
+
+//Restart
+adb -s 192.168.0.198:5555 shell am force-stop alec.androidthingsece558
+adb -s 192.168.0.198:5555 logcat -c
+adb -s 192.168.0.198:5555 shell am start -n alec.androidthingsece558/.HomeActivity
+
+
+
+//get log
+adb -s 192.168.0.198:5555 logcat HomeActivity:V *:S -d > C:\Users\Alec\OneDrive\6th_year\ECE_558\PROJ3\proj3_github_repo\logcatErrors.txt
+
+
+
