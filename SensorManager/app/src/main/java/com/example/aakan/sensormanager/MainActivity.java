@@ -8,7 +8,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
@@ -23,8 +22,6 @@ import static android.content.ContentValues.TAG;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
-    private float lastX, lastY, lastZ;
-
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
@@ -32,21 +29,20 @@ public class MainActivity extends Activity implements SensorEventListener {
     private float deltaY = 0;
     private float deltaZ = 0;
 
-    private float vibrateThreshold = 0;
-
     private TextView currentX, currentY, currentZ, Saturation_setX, PWM_setX;
     private SeekBar PWM_MOTOR, Saturation;
     private TextView Angle, RGBValue;
-    private int PWM_MOTOR_Value;
+    private int Seekbar_MOTOR_Progress;
     private double SaturationValue;
 
-    public Vibrator v;
-
     private int RED, GREEN, BLUE, MOTOR;
+
+    private String motorPWMKey = "MOTOR_PWM", saturationKey = "SATURATION";
 
     private double colorAngle;
 
     private boolean motorToggle = false;
+    private String motorToggleKey = "MOTOR_TOGGLE";
 
     long lastMillis = 0;
 
@@ -63,31 +59,45 @@ public class MainActivity extends Activity implements SensorEventListener {
         setContentView(R.layout.activity_main);
         initializeViews();
 
+        if (savedInstanceState == null) {
+            Seekbar_MOTOR_Progress = 50;
+            PWM_setX.setText(String.valueOf(Seekbar_MOTOR_Progress));
+
+            SaturationValue = 50;
+            Saturation_setX.setText(String.valueOf((int)SaturationValue));
+        }
+        else {
+            motorToggle = savedInstanceState.getBoolean(motorToggleKey);
+
+            Seekbar_MOTOR_Progress = savedInstanceState.getInt(motorPWMKey);
+            PWM_setX.setText(String.valueOf(Seekbar_MOTOR_Progress));
+
+            SaturationValue = savedInstanceState.getDouble(saturationKey);
+            Saturation_setX.setText(String.valueOf((int)SaturationValue));
+        }
+
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             // success! we have an accelerometer
 
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-            vibrateThreshold = accelerometer.getMaximumRange() / 2;
         } else {
             // fail, we dont have an accelerometer!
         }
 
-        //initialize vibration
-        v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
         try {
             PWM_MOTOR.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
-                    PWM_MOTOR_Value = progress;
+                    Seekbar_MOTOR_Progress = progress;
 
-                    PWM_setX.setText(String.valueOf(PWM_MOTOR_Value));
+                    PWM_setX.setText(String.valueOf(Seekbar_MOTOR_Progress));
 
                     //PWM_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
-                    //myRef.child("PWM_MOTOR").setValue(PWM_MOTOR_Value);
+                    //myRef.child("PWM_MOTOR").setValue(Seekbar_MOTOR_Progress);
                 }
 
                 @Override
@@ -260,10 +270,10 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         xyPlaneAccel=  Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
 
-        if (xyPlaneAccel > accelerationGravity) {
+        if (xyPlaneAccel > accelerationGravity)
             xyPlaneAccel = accelerationGravity;
-        }
-        tiltAngle = Math.abs( Math.toDegrees(Math.atan((xyPlaneAccel)/(accelerationGravity))) );
+
+        tiltAngle = Math.abs( Math.toDegrees(Math.asin((xyPlaneAccel)/(accelerationGravity))) );
 
         // Normalize the value to 90 degrees
         Value = tiltAngle/90.0;
@@ -329,7 +339,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private int getMotor() {
 
-        return PWM_MOTOR_Value;
+        return Seekbar_MOTOR_Progress;
     }
     // display the current x,y,z accelerometer values
     public void displayCurrentValues() {
@@ -349,5 +359,15 @@ public class MainActivity extends Activity implements SensorEventListener {
         View view = findViewById(com.example.aakan.sensormanager.R.id.final_proj_root);//this.getWindow().getDecorView();
 
         view.setBackgroundColor(Color.rgb(R,G,B));
+    }
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        Log.d(TAG, "onSaveInstanceState");
+
+        outState.putBoolean(motorToggleKey, motorToggle);
+        outState.putInt(motorPWMKey, Seekbar_MOTOR_Progress);
+        outState.putDouble(saturationKey, SaturationValue);
     }
 }
