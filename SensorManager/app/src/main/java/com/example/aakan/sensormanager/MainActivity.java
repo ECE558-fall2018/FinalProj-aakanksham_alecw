@@ -28,10 +28,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
-    private float deltaXMax = 0;
-    private float deltaYMax = 0;
-    private float deltaZMax = 0;
-
     private float deltaX = 0;
     private float deltaY = 0;
     private float deltaZ = 0;
@@ -48,9 +44,14 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     private int RED, GREEN, BLUE, MOTOR;
 
+    private double colorAngle;
+
     private boolean motorToggle = false;
 
     long lastMillis = 0;
+
+
+    DecimalFormat df = new DecimalFormat("##.#");
 
     // Set up firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -159,9 +160,6 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        // clean current values
-        displayCleanValues();
         // display the current x,y,z accelerometer values
         displayCurrentValues();
         // calculate RGB values
@@ -179,12 +177,6 @@ public class MainActivity extends Activity implements SensorEventListener {
         setActivityBackgroundColor(RED, GREEN, BLUE);
     }
 
-    public void displayCleanValues() {
-        currentX.setText("0.0");
-        currentY.setText("0.0");
-        currentZ.setText("0.0");
-    }
-
     private void updateFireBase() {
         myRef.child("PWM_RED_LED").setValue(RED);
         myRef.child("PWM_GREEN_LED").setValue(GREEN);
@@ -195,14 +187,15 @@ public class MainActivity extends Activity implements SensorEventListener {
     private void calculateRGB() {
         // Algorithm found from:
         // https://en.wikipedia.org/wiki/HSL_and_HSV
+        // and https://www.rapidtables.com/convert/color/hsv-to-rgb.html
         double Hue, HuePrime;
         double Saturation;
         double Value;
         double Chroma, X;
         int PWMChroma, PWMX;
+        int Rprime, Gprime, Bprime, modifier;
 
         Hue = calculateHue();
-        //Saturation = SaturationValue/100;
         Saturation = SaturationValue/100.0;
         Value = calculateValue();
 
@@ -216,41 +209,47 @@ public class MainActivity extends Activity implements SensorEventListener {
         PWMChroma   = (int) (Chroma * 100.0);
         PWMX        = (int) (X * 100.0);
 
+        modifier = (int) ((Value - Chroma) * 100.0);
+
         if ( (HuePrime >= 0) & (HuePrime <= 1) ) {
-            RED     = PWMChroma;
-            GREEN   = PWMX;
-            BLUE    = 0;
+            Rprime     = PWMChroma;
+            Gprime   = PWMX;
+            Bprime    = 0;
         }
         else if ( (HuePrime > 1) & (HuePrime <= 2) ) {
-            RED     = PWMX;
-            GREEN   = PWMChroma;
-            BLUE    = 0;
+            Rprime     = PWMX;
+            Gprime   = PWMChroma;
+            Bprime    = 0;
         }
         else if ( (HuePrime > 2) & (HuePrime <= 3) ) {
-            RED     = 0;
-            GREEN   = PWMChroma;
-            BLUE    = PWMX;
+            Rprime     = 0;
+            Gprime   = PWMChroma;
+            Bprime    = PWMX;
         }
         else if ( (HuePrime > 3) & (HuePrime <= 4) ) {
-            RED     = 0;
-            GREEN   = PWMX;
-            BLUE    = PWMChroma;
+            Rprime     = 0;
+            Gprime   = PWMX;
+            Bprime    = PWMChroma;
         }
         else if ( (HuePrime > 4) & (HuePrime <= 5) ) {
-            RED     = PWMX;
-            GREEN   = 0;
-            BLUE    = PWMChroma;
+            Rprime     = PWMX;
+            Gprime   = 0;
+            Bprime    = PWMChroma;
         }
         else if ( (HuePrime > 5) & (HuePrime <= 6) ) {
-            RED     = PWMChroma;
-            GREEN   = 0;
-            BLUE    = PWMX;
+            Rprime     = PWMChroma;
+            Gprime   = 0;
+            Bprime    = PWMX;
         }
         else {
-            RED     = 0;
-            GREEN   = 0;
-            BLUE    = 0;
+            Rprime     = 0;
+            Gprime   = 0;
+            Bprime    = 0;
         }
+
+        RED     = Rprime + modifier;
+        GREEN   = Gprime + modifier;
+        BLUE    = Bprime + modifier;
 
         String RGBText = "(" + String.valueOf(RED) + "," + String.valueOf(GREEN) + "," + String.valueOf(BLUE) + ")";
         RGBValue.setText(RGBText);
@@ -287,7 +286,8 @@ public class MainActivity extends Activity implements SensorEventListener {
             offsetAngle = 270;
         }
 
-        return (rawAngle + offsetAngle);
+        colorAngle = (rawAngle + offsetAngle);
+        return colorAngle;
     }
 
     private void checkForShake() {
@@ -328,19 +328,14 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
     // display the current x,y,z accelerometer values
     public void displayCurrentValues() {
-        currentX.setText(Float.toString(deltaX));
-        currentY.setText(Float.toString(deltaY));
-        currentZ.setText(Float.toString(deltaZ));
+        currentX.setText(df.format(deltaX));
+        currentY.setText(df.format(deltaY));
+        currentZ.setText(df.format(deltaZ));
 
-        double AngleV = Math.abs( Math.toDegrees(Math.atan((deltaY)/(deltaZ))) );
-        DecimalFormat df = new DecimalFormat("#.##");
-        Angle.setText(String.valueOf(AngleV));
+        Angle.setText(df.format(colorAngle));
     }
 
     public void setActivityBackgroundColor(int R, int G, int B) {
-       //String hex = String.format("#%02x%02x%02x", R, G, B);
-       //int clr = Integer.valueOf(hex);
-
        //Color color = new Color (R,G,B);
         R = (R*255)/100;
         G = (G*255)/100;
@@ -349,6 +344,5 @@ public class MainActivity extends Activity implements SensorEventListener {
         View view = findViewById(com.example.aakan.sensormanager.R.id.final_proj_root);//this.getWindow().getDecorView();
 
         view.setBackgroundColor(Color.rgb(R,G,B));
-        //view.setBackgroundColor(Color.rgb(R, G, B));
     }
 }
