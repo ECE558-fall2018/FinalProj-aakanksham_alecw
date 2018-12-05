@@ -86,7 +86,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
                     PWM_setX.setText(String.valueOf(PWM_MOTOR_Value));
 
-                    PWM_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+                    //PWM_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
                     //myRef.child("PWM_MOTOR").setValue(PWM_MOTOR_Value);
                 }
 
@@ -108,7 +108,7 @@ public class MainActivity extends Activity implements SensorEventListener {
                     SaturationValue = progress;
 
                     Saturation_setX.setText(String.valueOf((int) SaturationValue));
-                    Saturation_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
+                    //Saturation_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
                 }
 
                 @Override
@@ -160,6 +160,11 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+
+        deltaX = event.values[0];
+        deltaY = event.values[1];
+        deltaZ = event.values[2];
+
         // display the current x,y,z accelerometer values
         displayCurrentValues();
         // calculate RGB values
@@ -168,12 +173,7 @@ public class MainActivity extends Activity implements SensorEventListener {
         checkForShake();
         //Update the database with our new values
         updateFireBase();
-
-        deltaX = event.values[0];
-        deltaY = event.values[1];
-        deltaZ = event.values[2];
-
-        // Changing background color
+        // Change background color
         setActivityBackgroundColor(RED, GREEN, BLUE);
     }
 
@@ -255,9 +255,15 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     private double calculateValue() {
-        double tiltAngle, Value;
+        double tiltAngle, Value, xyPlaneAccel;
+        final double accelerationGravity = 9.81;
 
-        tiltAngle = Math.abs( Math.toDegrees(Math.atan((deltaY)/(deltaZ))) );
+        xyPlaneAccel=  Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+
+        if (xyPlaneAccel > accelerationGravity) {
+            xyPlaneAccel = accelerationGravity;
+        }
+        tiltAngle = Math.abs( Math.toDegrees(Math.atan((xyPlaneAccel)/(accelerationGravity))) );
 
         // Normalize the value to 90 degrees
         Value = tiltAngle/90.0;
