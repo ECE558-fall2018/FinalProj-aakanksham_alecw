@@ -187,7 +187,6 @@ public class MainActivity extends Activity implements SensorEventListener {
     private void calculateRGB() {
         // Algorithm found from:
         // https://en.wikipedia.org/wiki/HSL_and_HSV
-        // and https://www.rapidtables.com/convert/color/hsv-to-rgb.html
         double Hue, HuePrime;
         double Saturation;
         double Value;
