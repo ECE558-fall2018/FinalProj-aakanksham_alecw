@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--<android:background="#ffffff"
+android:backgroundTint="@color/Blue"-->
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/final_proj_root"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#ffffff"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="20dp"
-    android:backgroundTint="@color/Blue">
+    android:paddingTop="20dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -27,10 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:background="#ffffff"
         android:baselineAligned="false"
         android:gravity="center|top"
-        android:backgroundTint="@color/Blue"
         android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,9 +38,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="#ffffff"
             android:gravity="center"
-            android:backgroundTint="@color/Blue"
             android:orientation="vertical">
 
             <TextView
@@ -68,7 +65,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -96,7 +92,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -125,7 +120,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="170dp"
-        android:background="@color/Blue"
         android:baselineAligned="false"
         android:gravity="center|top"
         android:orientation="horizontal"
@@ -136,7 +130,6 @@
             android:layout_width="23dp"
             android:layout_height="match_parent"
             android:layout_weight="0.33"
-            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -166,7 +159,6 @@
             android:layout_width="27dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.33"
-            android:background="@color/Blue"
             android:gravity="center"
             android:orientation="vertical">
 

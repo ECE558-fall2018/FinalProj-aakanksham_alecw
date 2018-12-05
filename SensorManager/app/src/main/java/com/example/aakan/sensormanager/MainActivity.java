@@ -73,7 +73,6 @@ public class MainActivity extends Activity implements SensorEventListener {
             // fail, we dont have an accelerometer!
         }
 
-        myRef.child("message").setValue("Hi");
         //initialize vibration
         v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
 
@@ -343,8 +342,12 @@ public class MainActivity extends Activity implements SensorEventListener {
        //int clr = Integer.valueOf(hex);
 
        //Color color = new Color (R,G,B);
+        R = (R*255)/100;
+        G = (G*255)/100;
+        B = (B*255)/100;
 
-        View view = this.getWindow().getDecorView();
+        View view = findViewById(com.example.aakan.sensormanager.R.id.final_proj_root);//this.getWindow().getDecorView();
+
         view.setBackgroundColor(Color.rgb(R,G,B));
         //view.setBackgroundColor(Color.rgb(R, G, B));
     }
