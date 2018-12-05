@@ -25,9 +25,9 @@ public class MainActivity extends Activity implements SensorEventListener {
     private SensorManager sensorManager;
     private Sensor accelerometer;
 
-    private float deltaX = 0;
-    private float deltaY = 0;
-    private float deltaZ = 0;
+    private float Xacceleration = 0;
+    private float Yacceleration = 0;
+    private float Zacceleration = 0;
 
     private TextView currentX, currentY, currentZ, Saturation_setX, PWM_setX;
     private SeekBar PWM_MOTOR, Saturation;
@@ -47,7 +47,8 @@ public class MainActivity extends Activity implements SensorEventListener {
     long lastMillis = 0;
 
 
-    DecimalFormat df = new DecimalFormat("##.#");
+    DecimalFormat accelerationFormat = new DecimalFormat("##.#");
+    DecimalFormat angleFormat = new DecimalFormat("###");
 
     // Set up firebase
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -57,8 +58,11 @@ public class MainActivity extends Activity implements SensorEventListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Set up view references in layout
         initializeViews();
 
+        //If the app is freshly started, set seekbars to 50
         if (savedInstanceState == null) {
             Seekbar_MOTOR_Progress = 50;
             PWM_setX.setText(String.valueOf(Seekbar_MOTOR_Progress));
@@ -66,6 +70,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             SaturationValue = 50;
             Saturation_setX.setText(String.valueOf((int)SaturationValue));
         }
+        //Otherwise get the motor toggle status, and the seekbar values from the saved instance state
         else {
             motorToggle = savedInstanceState.getBoolean(motorToggleKey);
 
@@ -79,27 +84,25 @@ public class MainActivity extends Activity implements SensorEventListener {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             // success! we have an accelerometer
-
             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
             sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
             // fail, we dont have an accelerometer!
+            Log.e(TAG, "Error - No accelerometer found");
         }
 
-
+        //Set up the seekbar listener in a try/catch block
         try {
+            // Motor PWM seekbar
             PWM_MOTOR.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
+                    //Get the seekbar value and update the text in the view
                     Seekbar_MOTOR_Progress = progress;
-
                     PWM_setX.setText(String.valueOf(Seekbar_MOTOR_Progress));
-
-                    //PWM_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
-                    //myRef.child("PWM_MOTOR").setValue(Seekbar_MOTOR_Progress);
                 }
 
+                //Required functions
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -111,16 +114,16 @@ public class MainActivity extends Activity implements SensorEventListener {
                 }
             });
 
+            // Saturation percentatge seekbar
             Saturation.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    int val = (progress * (seekBar.getWidth() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();;
+                    //Get the seekbar value and update the text in the view
                     SaturationValue = progress;
-
                     Saturation_setX.setText(String.valueOf((int) SaturationValue));
-                    //Saturation_setX.setX(seekBar.getX() + val + seekBar.getThumbOffset() / 2);
                 }
 
+                //Required functions
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -138,6 +141,7 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     }
 
+    //Set up the views from their XML references
     public void initializeViews() {
         currentX = (TextView) findViewById(R.id.currentX);
         currentY = (TextView) findViewById(R.id.currentY);
@@ -152,48 +156,60 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     //onResume() register the accelerometer for listening the events
+    @Override
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     //onPause() unregister the accelerometer for stop listening the events
+    @Override
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
     }
 
+    //Required Function
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
 
+    //Any time accelerometer values change, run this loop
     @Override
     public void onSensorChanged(SensorEvent event) {
-
-        deltaX = event.values[0];
-        deltaY = event.values[1];
-        deltaZ = event.values[2];
+        // Get the accelerometer values on all 3 axis
+        Xacceleration = event.values[0];
+        Yacceleration = event.values[1];
+        Zacceleration = event.values[2];
 
         // display the current x,y,z accelerometer values
         displayCurrentValues();
+
         // calculate RGB values
         calculateRGB();
+
         // Check if the device has been shaken and toggle the motor accordingly
         checkForShake();
+
         //Update the database with our new values
         updateFireBase();
+
         // Change background color
         setActivityBackgroundColor(RED, GREEN, BLUE);
     }
 
     private void updateFireBase() {
+        // Update the RGB PWM values, and the motor value in Google Firebase
         myRef.child("PWM_RED_LED").setValue(RED);
         myRef.child("PWM_GREEN_LED").setValue(GREEN);
         myRef.child("PWM_BLUE_LED").setValue(BLUE);
         myRef.child("PWM_MOTOR").setValue(MOTOR);
     }
 
+    // This function gets the accelerometer values, creates a
+    // color in the HSV colorspace based on device orientation,
+    // then converts it to RGB
     private void calculateRGB() {
         // Algorithm found from:
         // https://en.wikipedia.org/wiki/HSL_and_HSV
@@ -204,10 +220,16 @@ public class MainActivity extends Activity implements SensorEventListener {
         int PWMChroma, PWMX;
         int Rprime, Gprime, Bprime, modifier;
 
+        //Get HSV colorspace values
+        //Get Hue based on X-Y plane device orientation
         Hue = calculateHue();
+        //Get Saturation from app seekbar
         Saturation = SaturationValue/100.0;
+        //Get the (brightness) Value from Z dimension orientation
         Value = calculateValue();
 
+        //Calculate chroma, and the face of the color wheel we are on
+        //This section implements the algorithm from Wikipedia linked above
         Chroma = Saturation * Value;
 
         HuePrime = Hue/60.0;
@@ -218,8 +240,10 @@ public class MainActivity extends Activity implements SensorEventListener {
         PWMChroma   = (int) (Chroma * 100.0);
         PWMX        = (int) (X * 100.0);
 
+        //Modifier to be added to RGB prime values later
         modifier = (int) ((Value - Chroma) * 100.0);
 
+        //Set the RGB Prime values based on current face of the color wheel
         if ( (HuePrime >= 0) & (HuePrime <= 1) ) {
             Rprime     = PWMChroma;
             Gprime   = PWMX;
@@ -256,70 +280,96 @@ public class MainActivity extends Activity implements SensorEventListener {
             Bprime    = 0;
         }
 
+        //Add the modifier to the RGB prime values to get the RGB colors
         RED     = Rprime + modifier;
         GREEN   = Gprime + modifier;
         BLUE    = Bprime + modifier;
 
+        //Update the view with the current RGB PWM values
         String RGBText = "(" + String.valueOf(RED) + "," + String.valueOf(GREEN) + "," + String.valueOf(BLUE) + ")";
         RGBValue.setText(RGBText);
     }
 
+    //Get the Value based on the current Z-axis orientation
     private double calculateValue() {
         double tiltAngle, Value, xyPlaneAccel;
-        final double accelerationGravity = 9.81;
+        final double accelerationGravity = 9.81; // m/(s^2)
 
-        xyPlaneAccel=  Math.sqrt(Math.pow(deltaX,2) + Math.pow(deltaY,2));
+        //Get the X-Y plane gravity vector
+        xyPlaneAccel=  Math.sqrt(Math.pow(Xacceleration,2) + Math.pow(Yacceleration,2));
 
+        //Set max value as the acceleration of gravity ( m/(s^2) )
         if (xyPlaneAccel > accelerationGravity)
             xyPlaneAccel = accelerationGravity;
 
+        //Use the arcsine function to get the angle of the X-Y gravity vector  vs acceleration of gravity
         tiltAngle = Math.abs( Math.toDegrees(Math.asin((xyPlaneAccel)/(accelerationGravity))) );
 
-        // Normalize the value to 90 degrees
+        // Normalize the value to 90 degrees (min is 0, max is 1)
         Value = tiltAngle/90.0;
 
         return Value;
     }
 
+    //Calculate the hue angle (X-Y plane oreintation)
     private double calculateHue() {
-        double rawAngle = Math.toDegrees(Math.atan((deltaX)/(deltaY)));
+        double rawAngle;
         double offsetAngle;
-        if ((deltaX < 0) & (deltaY >= 0)) {
+
+        //Use arctangent to get the angle between X and Y acceleration vectors
+        rawAngle = Math.toDegrees(Math.atan((Xacceleration)/(Yacceleration)));
+
+        //If we are in the top-right quadrant, negate the angle, offset is 0 for this quadrant
+        if ((Xacceleration < 0) & (Yacceleration >= 0)) {
             rawAngle = rawAngle * (-1);
             offsetAngle = 0;
         }
-        else if ((deltaX < 0) & (deltaY < 0)) {
+        //If we are in the bottom-right quadrant, get the angle inverse, offset is 90 for this quadrant
+        else if ((Xacceleration < 0) & (Yacceleration < 0)) {
             rawAngle = 90 - rawAngle;
             offsetAngle = 90;
         }
-        else if ((deltaX >= 0) & (deltaY < 0)) {
+        //If we are in the bottom-left quadrant, negate the angle, offset is 180 for this quadrant
+        else if ((Xacceleration >= 0) & (Yacceleration < 0)) {
             rawAngle = rawAngle * (-1);
             offsetAngle = 180;
         }
-        else {//if ((deltaX >= 0) & (deltaY >= 0)) {
+        //If we are in the top-right quadrant, get the angle inverse, offset is 270 for this quadrant
+        else {//if ((Xacceleration >= 0) & (Yacceleration >= 0)) {
             rawAngle = 90 - rawAngle;
             offsetAngle = 270;
         }
 
+        //The hue angle is the addition of the modified raw angle, and its quadrant offset
         colorAngle = (rawAngle + offsetAngle);
         return colorAngle;
     }
 
+    //Check accelerometer values to see if the device has been shaken
     private void checkForShake() {
         boolean shake = false;
-        final int shakeThreshold = 30; // m/(s^2)
-        final int shakeTimeOut = 2000; //milliseconds
+
         long currentMillis, difference;
 
+        //Set the acceleration threshold to register a "shake"
+        final int shakeThreshold = 30; // m/(s^2)
+
+        //Require an amount of time between registered shakes
+        final int shakeTimeOut = 2000; //milliseconds
+
         if (true) {
-            if (deltaX > shakeThreshold) {
+            // if acceleration in any direction is greater than 30 m/(s^2)
+            // (about 3x acceleration of gravity) then register a shake as true
+            if (Xacceleration > shakeThreshold) {
                 shake = true;
-            } else if (deltaY > shakeThreshold) {
+            } else if (Yacceleration > shakeThreshold) {
                 shake = true;
-            } else if (deltaZ > shakeThreshold) {
+            } else if (Zacceleration > shakeThreshold) {
                 shake = true;
             }
 
+            // If a shake was detected, and it's been 2 seconds since the motor was toggled last
+            // then toggle the motor
             if (shake) {
                 currentMillis = System.currentTimeMillis();
                 difference = currentMillis - lastMillis;
@@ -329,37 +379,41 @@ public class MainActivity extends Activity implements SensorEventListener {
                 }
             }
 
+            //If the motor has been toggled above, set MOTOR value to be written to firebase later
             if (motorToggle) {
-                MOTOR = getMotor();
+                //If toggle is true, set motor to the seekbar value
+                MOTOR = Seekbar_MOTOR_Progress;
             } else {
+                //Otherwise turn of the motor
                 MOTOR = 0;
             }
         }
     }
 
-    private int getMotor() {
-
-        return Seekbar_MOTOR_Progress;
-    }
-    // display the current x,y,z accelerometer values
+    // display the current x,y,z accelerometer values, and the Hue angle
     public void displayCurrentValues() {
-        currentX.setText(df.format(deltaX));
-        currentY.setText(df.format(deltaY));
-        currentZ.setText(df.format(deltaZ));
+        currentX.setText(accelerationFormat.format(Xacceleration));
+        currentY.setText(accelerationFormat.format(Yacceleration));
+        currentZ.setText(accelerationFormat.format(Zacceleration));
 
-        Angle.setText(df.format(colorAngle));
+        Angle.setText(angleFormat.format(colorAngle));
     }
 
+    //Set the app background color to the current RGB PWM values
     public void setActivityBackgroundColor(int R, int G, int B) {
-       //Color color = new Color (R,G,B);
+        //Convert the values from PWM to byte values (0 to 255)
         R = (R*255)/100;
         G = (G*255)/100;
         B = (B*255)/100;
 
+        //Get the app layout as a view
         View view = findViewById(com.example.aakan.sensormanager.R.id.final_proj_root);//this.getWindow().getDecorView();
 
+        //Set the view color to RGB bytes
         view.setBackgroundColor(Color.rgb(R,G,B));
     }
+
+    // Save the seekbar values, and the motor toggle state
     @Override
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
