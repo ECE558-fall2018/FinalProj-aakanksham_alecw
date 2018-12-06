@@ -303,7 +303,7 @@ public class MainActivity extends Activity implements SensorEventListener {
             xyPlaneAccel = accelerationGravity;
 
         //Use the arcsine function to get the angle of the X-Y gravity vector  vs acceleration of gravity
-        tiltAngle = Math.abs( Math.toDegrees(Math.asin((xyPlaneAccel)/(accelerationGravity))) );
+        tiltAngle = Math.abs( Math.toDegrees(Math.atan((xyPlaneAccel)/(Zacceleration))) );
 
         // Normalize the value to 90 degrees (min is 0, max is 1)
         Value = tiltAngle/90.0;
