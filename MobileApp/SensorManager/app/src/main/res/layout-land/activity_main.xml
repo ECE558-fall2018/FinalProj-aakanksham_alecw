@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/final_proj_root"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingTop="20dp">
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="@string/CurrentAccelarationLabel"
+        android:textColor="@color/White"
+        android:textSize="30sp"
+        android:textAlignment="center"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/XAxisLabel"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/currentX"
+                android:text="@string/CurrentX"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/YAxisLabel"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/currentY"
+                android:text="@string/CurrentY"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="@string/ZAxisLabel"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/currentZ"
+                android:text="@string/CurrentZ"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/AngleLabel"
+                android:text="@string/AngleLabel"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/Angle"
+                android:text="@string/Angle"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:id="@+id/RGBLabel"
+                android:text="@string/RGBLabel"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/RGBValues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/RGBValues"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="25dp"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/PWM_Label"
+                android:text="@string/PWM_Label"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/PWM_setX"
+                android:text="@string/PWM_setX"
+                android:textColor="@color/White"
+                android:textSize="20sp"/>
+            <SeekBar
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/PWM_MOTOR_SeekBar"
+                android:progress="50" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="25dp"
+            >
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/SaturationLabel"
+                android:text="@string/SaturationLabel"
+                android:textColor="@color/White"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/Saturation_setX"
+                android:text="@string/Saturation_setX"
+                android:textColor="@color/White"
+                android:textSize="20sp" />
+
+            <SeekBar
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:id="@+id/Saturation_SeekBar"
+                android:progress="50" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "594301980624",
+    "firebase_url": "https://ece558-mathuria-wiese.firebaseio.com",
+    "project_id": "ece558-mathuria-wiese",
+    "storage_bucket": "ece558-mathuria-wiese.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:594301980624:android:5e620e68c7b14c47",
+        "android_client_info": {
+          "package_name": "alec.androidthingsece558"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "594301980624-be03usl54icnngn2bk04q7o6l7j3vpht.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv2yG4fSdLG7Q2vpZ-6hzjM3kXr4IoVCA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

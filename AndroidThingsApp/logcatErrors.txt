@@ -1,0 +1,118 @@
+--------- beginning of main
+--------- beginning of system
+11-12 08:01:21.855  5788  5788 D HomeActivity: Available GPIO: [BCM10, BCM11, BCM12, BCM13, BCM14, BCM15, BCM16, BCM17, BCM18, BCM19, BCM2, BCM20, BCM21, BCM22, BCM23, BCM24, BCM25, BCM26, BCM27, BCM3, BCM4, BCM5, BCM6, BCM7, BCM8, BCM9]
+11-12 08:01:21.858  5788  5788 D HomeActivity: Starting HomeActivity
+11-12 08:01:21.858  5788  5788 D HomeActivity: Available GPIO: [BCM10, BCM11, BCM12, BCM13, BCM14, BCM15, BCM16, BCM17, BCM18, BCM19, BCM2, BCM20, BCM21, BCM22, BCM23, BCM24, BCM25, BCM26, BCM27, BCM3, BCM4, BCM5, BCM6, BCM7, BCM8, BCM9]
+11-12 08:01:21.859  5788  5788 I HomeActivity: List of available devices: [I2C1]
+11-12 08:01:21.866  5788  5788 D HomeActivity: Set register 0 to 64
+11-12 08:01:21.867  5788  5788 D HomeActivity: Read register 0 as 64
+11-12 08:01:21.868  5788  5788 D HomeActivity: Set register 1 to 0
+11-12 08:01:21.869  5788  5788 D HomeActivity: Read register 1 as 0
+11-12 08:01:21.869  5788  5788 D HomeActivity: Set register 2 to 64
+11-12 08:01:21.870  5788  5788 D HomeActivity: Read register 2 as 64
+11-12 08:01:21.871  5788  5788 D HomeActivity: Set register 3 to 37
+11-12 08:01:21.872  5788  5788 D HomeActivity: Read register 3 as 37
+11-12 08:01:21.898  5788  5788 D HomeActivity: Read register 6 as 2
+11-12 08:01:21.899  5788  5788 D HomeActivity: Read register 5 as 126
+11-12 08:01:21.899  5788  5788 D HomeActivity: Temperature is 74.72032242305814
+11-12 08:01:21.900  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:21.901  5788  5788 D HomeActivity: Read register 7 as -126
+11-12 08:01:21.902  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:21.903  5788  5788 D HomeActivity: Read register 9 as -127
+11-12 08:01:21.904  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:21.905  5788  5788 D HomeActivity: Read register 11 as -126
+11-12 08:01:22.331  5788  5788 V HomeActivity: Length 1
+11-12 08:01:22.333  5788  5788 D HomeActivity: Set register 0 to 20
+11-12 08:01:22.334  5788  5788 D HomeActivity: Set register 1 to 0
+11-12 08:01:22.335  5788  5788 D HomeActivity: Set register 2 to 20
+11-12 08:01:22.335  5788  5788 V HomeActivity: 
+11-12 08:01:22.906  5788  5788 D HomeActivity: Read register 6 as 2
+11-12 08:01:22.907  5788  5788 D HomeActivity: Read register 5 as -124
+11-12 08:01:22.907  5788  5788 D HomeActivity: Temperature is 74.82584269662922
+11-12 08:01:22.908  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:22.909  5788  5788 D HomeActivity: Read register 7 as -127
+11-12 08:01:22.910  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:22.912  5788  5788 D HomeActivity: Read register 9 as -126
+11-12 08:01:22.914  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:22.915  5788  5788 D HomeActivity: Read register 11 as -127
+11-12 08:01:23.916  5788  5788 D HomeActivity: Read register 6 as 2
+11-12 08:01:23.917  5788  5788 D HomeActivity: Read register 5 as 127
+11-12 08:01:23.917  5788  5788 D HomeActivity: Temperature is 74.73790913531998
+11-12 08:01:23.918  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:23.919  5788  5788 D HomeActivity: Read register 7 as -127
+11-12 08:01:23.920  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:23.921  5788  5788 D HomeActivity: Read register 9 as -127
+11-12 08:01:23.922  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:23.923  5788  5788 D HomeActivity: Read register 11 as -126
+11-12 08:01:24.924  5788  5788 D HomeActivity: Read register 6 as 2
+11-12 08:01:24.925  5788  5788 D HomeActivity: Read register 5 as 110
+11-12 08:01:24.925  5788  5788 D HomeActivity: Temperature is 74.43893502686859
+11-12 08:01:24.926  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:24.927  5788  5788 D HomeActivity: Read register 7 as 127
+11-12 08:01:24.927  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:24.928  5788  5788 D HomeActivity: Read register 9 as -128
+11-12 08:01:24.929  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:24.930  5788  5788 D HomeActivity: Read register 11 as -127
+11-12 08:01:25.931  5788  5788 D HomeActivity: Read register 6 as 3
+11-12 08:01:25.931  5788  5788 D HomeActivity: Read register 5 as 45
+11-12 08:01:25.932  5788  5788 D HomeActivity: Temperature is 77.79799706888129
+11-12 08:01:25.932  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:25.933  5788  5788 D HomeActivity: Read register 7 as 126
+11-12 08:01:25.934  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:25.935  5788  5788 D HomeActivity: Read register 9 as -127
+11-12 08:01:25.936  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:25.936  5788  5788 D HomeActivity: Read register 11 as -126
+11-12 08:01:26.937  5788  5788 D HomeActivity: Read register 6 as 1
+11-12 08:01:26.938  5788  5788 D HomeActivity: Read register 5 as -37
+11-12 08:01:26.938  5788  5788 D HomeActivity: Temperature is 71.85368832437713
+11-12 08:01:26.939  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:26.940  5788  5788 D HomeActivity: Read register 7 as -126
+11-12 08:01:26.941  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:26.941  5788  5788 D HomeActivity: Read register 9 as -126
+11-12 08:01:26.942  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:26.943  5788  5788 D HomeActivity: Read register 11 as -127
+11-12 08:01:27.945  5788  5788 D HomeActivity: Read register 6 as 1
+11-12 08:01:27.945  5788  5788 D HomeActivity: Read register 5 as -1
+11-12 08:01:27.946  5788  5788 D HomeActivity: Temperature is 72.48680996580362
+11-12 08:01:27.946  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:27.947  5788  5788 D HomeActivity: Read register 7 as -127
+11-12 08:01:27.948  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:27.949  5788  5788 D HomeActivity: Read register 9 as -127
+11-12 08:01:27.949  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:27.950  5788  5788 D HomeActivity: Read register 11 as -127
+11-12 08:01:28.951  5788  5788 D HomeActivity: Read register 6 as 1
+11-12 08:01:28.952  5788  5788 D HomeActivity: Read register 5 as 94
+11-12 08:01:28.952  5788  5788 D HomeActivity: Temperature is 69.65534929164632
+11-12 08:01:28.953  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:28.954  5788  5788 D HomeActivity: Read register 7 as -127
+11-12 08:01:28.957  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:28.958  5788  5788 D HomeActivity: Read register 9 as -127
+11-12 08:01:28.959  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:28.961  5788  5788 D HomeActivity: Read register 11 as -127
+11-12 08:01:29.962  5788  5788 D HomeActivity: Read register 6 as 1
+11-12 08:01:29.963  5788  5788 D HomeActivity: Read register 5 as -122
+11-12 08:01:29.963  5788  5788 D HomeActivity: Temperature is 70.35881778212018
+11-12 08:01:29.964  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:29.965  5788  5788 D HomeActivity: Read register 7 as -127
+11-12 08:01:29.966  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:29.966  5788  5788 D HomeActivity: Read register 9 as -128
+11-12 08:01:29.967  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:29.968  5788  5788 D HomeActivity: Read register 11 as -125
+11-12 08:01:30.970  5788  5788 D HomeActivity: Read register 6 as 1
+11-12 08:01:30.970  5788  5788 D HomeActivity: Read register 5 as -111
+11-12 08:01:30.971  5788  5788 D HomeActivity: Temperature is 70.55227161700049
+11-12 08:01:30.971  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:30.972  5788  5788 D HomeActivity: Read register 7 as -126
+11-12 08:01:30.973  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:30.974  5788  5788 D HomeActivity: Read register 9 as -126
+11-12 08:01:30.974  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:30.975  5788  5788 D HomeActivity: Read register 11 as -127
+11-12 08:01:31.976  5788  5788 D HomeActivity: Read register 6 as 1
+11-12 08:01:31.976  5788  5788 D HomeActivity: Read register 5 as -108
+11-12 08:01:31.977  5788  5788 D HomeActivity: Temperature is 70.60503175378602
+11-12 08:01:31.977  5788  5788 D HomeActivity: Read register 8 as 0
+11-12 08:01:31.978  5788  5788 D HomeActivity: Read register 7 as -126
+11-12 08:01:31.979  5788  5788 D HomeActivity: Read register 10 as 0
+11-12 08:01:31.980  5788  5788 D HomeActivity: Read register 9 as -122
+11-12 08:01:31.980  5788  5788 D HomeActivity: Read register 12 as 0
+11-12 08:01:31.981  5788  5788 D HomeActivity: Read register 11 as -126

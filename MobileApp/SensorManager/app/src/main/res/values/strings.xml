@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Color Wheel</string>
+    <string name="CurrentAccelarationLabel">Current Acceleration</string>
+    <string name="XAxisLabel">X Axis</string>
+    <string name="YAxisLabel">Y Axis</string>
+    <string name="ZAxisLabel">Z Axis</string>
+    <string name="CurrentX">0.0</string>
+    <string name="CurrentY">0.0</string>
+    <string name="CurrentZ">0.0</string>
+    <string name="AngleLabel">Hue Angle (X-Y plane)</string>
+    <string name="Angle">0.0</string>
+    <string name="RGBLabel">(R,G,B)</string>
+    <string name="RGBValues">(0,0,0)</string>
+    <string name="PWM_Label">Motor PWM</string>
+    <string name="SaturationLabel">Saturation</string>
+    <string name="PWM_setX"></string>
+    <string name="Saturation_setX"></string>
+</resources>
