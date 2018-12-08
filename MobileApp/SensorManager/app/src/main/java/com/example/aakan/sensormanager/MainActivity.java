@@ -302,7 +302,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         if (xyPlaneAccel > accelerationGravity)
             xyPlaneAccel = accelerationGravity;
 
-        //Use the arctangent function to get the angle of the X-Y acceleration vector vs the Z-axis acceleration vector
+        //Use the arctangent function to get the angle of the X-Y acceleration vector vs the 
+		//Z-axis acceleration vector
         tiltAngle = Math.abs( Math.toDegrees(Math.atan((xyPlaneAccel)/(Zacceleration))) );
 
         // Normalize the value to 90 degrees (min is 0, max is 1)
@@ -407,8 +408,8 @@ public class MainActivity extends Activity implements SensorEventListener {
         B = (B*255)/100;
 
         //Get the app layout as a view
-        View view = findViewById(com.example.aakan.sensormanager.R.id.final_proj_root);//this.getWindow().getDecorView();
-
+        View view = findViewById(com.example.aakan.sensormanager.R.id.final_proj_root);
+		
         //Set the view color to RGB bytes
         view.setBackgroundColor(Color.rgb(R,G,B));
     }
